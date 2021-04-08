@@ -63,10 +63,6 @@ trigger:
 - platform: event
   event_type: ozw.scene_activated
 condition: '{{ trigger.event.data.node_id == ( ozw_node_id | int ) }}'
-  condition: and
-  conditions:
-    - '{{ trigger.event.data.node_id == ( ozw_node_id | int ) }}'
-    - '{{ trigger.event.data.scene_value_id == 1 }}'
 action:
 - variables:
     scene_id: '{{ trigger.event.data.scene_id }}'
