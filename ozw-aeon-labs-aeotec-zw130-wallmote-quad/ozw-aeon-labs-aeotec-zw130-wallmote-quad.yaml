@@ -63,8 +63,8 @@ trigger:
 condition:
   condition: and
   conditions:
-    - condition: '{{ trigger.event.data.node_id == ozw_node_id }}'
-    - condition: '{{ trigger.event.data.scene_value_id == 1 }}'
+    - '{{ trigger.event.data.node_id == ozw_node_id }}'
+    - '{{ trigger.event.data.scene_value_id == 1 }}'
 action:
 - variables:
     scene_id: '{{ trigger.event.data.scene_id }}'
