@@ -59,7 +59,8 @@ trigger:
 - platform: event
   event_type: ozw.scene_activated
   event_data:
-    node_id: '{{ ozw_node_id|int }}'
+    node_id: >
+      {{ ozw_node_id|int }}
 action:
 - variables:
     node_id: '{{ trigger.event.data.node_id }}'
