@@ -1,0 +1,106 @@
+blueprint:
+  name: Inovelli LZW31-SN Scene Selection OZW
+  description: Configure paddle-click routines for the Inovelli LZW31-SN switches using the OZW integration
+  domain: automation
+  input:
+    ozw_node_id:
+      name: Node ID
+      description: Enter the Z-Wave Node ID for the switch you want to use.
+    double_up:
+      name: Double Up Paddle Click
+      description: Action to run when the top paddle button is double clicked.
+      default: []
+      selector:
+        action: {}
+    double_down:
+      name: Double Down Paddle Click
+      description: Action to run when the bottom paddle button is double clicked.
+      default: []
+      selector:
+        action: {}
+    triple_up:
+      name: Triple Up Paddle Click
+      description: Action to run when the top paddle button is triple clicked.
+      default: []
+      selector:
+        action: {}
+    triple_down:
+      name: Triple Down Paddle Click
+      description: Action to run when the bottom paddle button is triple clicked.
+      default: []
+      selector:
+        action: {}
+    quadruple_up:
+      name: Quadruple Up Paddle Click
+      description: Action to run when the top paddle button is quadruple clicked.
+      default: []
+      selector:
+        action: {}
+    quadruple_down:
+      name: Quadruple Down Paddle Click
+      description: Action to run when the bottom paddle button is quadruple clicked.
+      default: []
+      selector:
+        action: {}
+    quintuple_up:
+      name: Quintuple Up Paddle Click
+      description: Action to run when the top paddle button is quintuple clicked.
+      default: []
+      selector:
+        action: {}
+    quintuple_down:
+      name: Quintuple Down Paddle Click
+      description: Action to run when the bottom paddle button is quintuple clicked.
+      default: []
+      selector:
+        action: {}
+  source_url: https://github.com/kdknigga/homeassistant_blueprints/blob/master/ozw-inovelli-LZW31-SN-scene-selection/ozw-inovelli-LZW31-SN-scene-selection.yaml
+mode: single
+max_exceeded: silen:
+variables:
+  ozw_node_id: !input 'ozw_node_id'
+trigger:
+- platform: event
+  event_type: ozw.scene_activated
+condition: '{{ trigger.event.data.node_id == ( ozw_node_id | int ) }}'
+  condition: and
+  conditions:
+    - '{{ trigger.event.data.node_id == ( ozw_node_id | int ) }}'
+    - '{{ trigger.event.data.scene_value_id == 1 }}'
+action:
+- variables:
+    scene_id: '{{ trigger.event.data.scene_id }}'
+    scene_value_id: '{{ trigger.event.data.scene_value_id }}'
+- choose:
+  - conditions:
+    - '{{ scene_id == 1 }}'
+    - '{{ scene_value_id == 4 }}'
+    sequence: !input 'double_down'
+  - conditions:
+    - '{{ scene_id == 2 }}'
+    - '{{ scene_value_id == 4 }}'
+    sequence: !input 'double_up'
+  - conditions:
+    - '{{ scene_id == 1 }}'
+    - '{{ scene_value_id == 5 }}'
+    sequence: !input 'triple_down'
+  - conditions:
+    - '{{ scene_id == 2 }}'
+    - '{{ scene_value_id == 5 }}'
+    sequence: !input 'triple_up'
+  - conditions:
+    - '{{ scene_id == 1 }}'
+    - '{{ scene_value_id == 6 }}'
+    sequence: !input 'quadruple_down'
+  - conditions:
+    - '{{ scene_id == 2 }}'
+    - '{{ scene_value_id == 6 }}'
+    sequence: !input 'quadruple_up'
+  - conditions:
+    - '{{ scene_id == 1 }}'
+    - '{{ scene_value_id == 7 }}'
+    sequence: !input 'quintuple_down'
+  - conditions:
+    - '{{ scene_id == 2 }}'
+    - '{{ scene_value_id == 7 }}'
+    sequence: !input 'quintuple_up'
