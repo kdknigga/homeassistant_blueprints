@@ -56,7 +56,7 @@ blueprint:
         action: {}
   source_url: https://github.com/kdknigga/homeassistant_blueprints/blob/master/ozw-inovelli-LZW31-SN-scene-selection/ozw-inovelli-LZW31-SN-scene-selection.yaml
 mode: single
-max_exceeded: silen:
+max_exceeded: silent
 variables:
   ozw_node_id: !input 'ozw_node_id'
 trigger:
