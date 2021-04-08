@@ -58,8 +58,6 @@ variables:
 trigger:
 - platform: event
   event_type: ozw.scene_activated
-  event_data:
-    node_id: '{{ ozw_node_id }}'
 condition:
   condition: and
   conditions:
