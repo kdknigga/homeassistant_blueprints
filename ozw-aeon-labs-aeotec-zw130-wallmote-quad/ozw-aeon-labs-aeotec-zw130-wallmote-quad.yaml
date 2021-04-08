@@ -60,26 +60,25 @@ trigger:
   event_type: ozw.scene_activated
   event_data:
     node_id: '{{ ozw_node_id }}'
+condition:
+  condition: and
+  conditions:
+    - condition: '{{ trigger.event.data.node_id == ozw_node_id }}'
+    - condition: '{{ trigger.event.data.scene_value_id == 1 }}'
 action:
 - variables:
-    node_id: '{{ trigger.event.data.node_id }}'
     scene_id: '{{ trigger.event.data.scene_id }}'
-    scene_value_id: '{{ trigger.event.data.scene_value_id }}'
 - choose:
   - conditions:
     - '{{ scene_id == 1 }}'
-    - '{{ scene_value_id == 1 }}'
     sequence: !input 'button_1'
   - conditions:
     - '{{ scene_id == 2 }}'
-    - '{{ scene_value_id == 1 }}'
     sequence: !input 'button_2'
   - conditions:
     - '{{ scene_id == 3 }}'
-    - '{{ scene_value_id == 1 }}'
     sequence: !input 'button_3'
   - conditions:
     - '{{ scene_id == 4 }}'
-    - '{{ scene_value_id == 1 }}'
 # Thanks Severinius-MUC for fixing Button 4 ;-)
     sequence: !input 'button_4'
