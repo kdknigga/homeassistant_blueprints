@@ -8,7 +8,7 @@ blueprint:
       description: Select the switch you want to configure
       selector:
         entity:
-          domain: switch
+          domain: light
           integration: ozw
     double_up:
       name: Double Up Paddle Click
