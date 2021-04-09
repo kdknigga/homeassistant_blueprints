@@ -10,7 +10,6 @@ blueprint:
         entity:
           domain: switch
           integration: ozw
-          manufacturer: Inovelli
     double_up:
       name: Double Up Paddle Click
       description: Action to run when the top paddle button is double clicked.
