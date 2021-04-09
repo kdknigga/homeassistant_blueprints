@@ -3,9 +3,14 @@ blueprint:
   description: Configure paddle-click routines for the Inovelli LZW31-SN switches using the OZW integration
   domain: automation
   input:
-    ozw_node_id:
-      name: Node ID
-      description: Enter the Z-Wave Node ID for the switch you want to use.
+    inovelli_switch:
+      name: Inovelli Switch
+      description: Select the switch you want to configure
+      selector:
+        entity:
+          domain: switch
+          integration: ozw
+          manufacturer: Inovelli
     double_up:
       name: Double Up Paddle Click
       description: Action to run when the top paddle button is double clicked.
@@ -58,7 +63,8 @@ blueprint:
 mode: single
 max_exceeded: silent
 variables:
-  ozw_node_id: !input 'ozw_node_id'
+  device: !input 'inovelli_switch'
+  ozw_node_id: '{{ state_attr(device,''node_id'') }}'
 trigger:
 - platform: event
   event_type: ozw.scene_activated
