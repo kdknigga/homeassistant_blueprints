@@ -10,6 +10,12 @@ blueprint:
         entity:
           domain: light
           integration: ozw
+    config_button:
+      name: Click Config Button
+      description: Action to run when the config button is clicked.
+      default: []
+      selector:
+        action: {}
     double_up:
       name: Double Up Paddle Click
       description: Action to run when the top paddle button is double clicked.
@@ -73,6 +79,10 @@ action:
     scene_id: '{{ trigger.event.data.scene_id }}'
     scene_value_id: '{{ trigger.event.data.scene_value_id }}'
 - choose:
+  - conditions:
+    - '{{ scene_id == 3 }}'
+    - '{{ scene_value_id == 1 }}'
+    sequence: !input 'config_button'
   - conditions:
     - '{{ scene_id == 1 }}'
     - '{{ scene_value_id == 4 }}'
