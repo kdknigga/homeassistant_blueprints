@@ -97,14 +97,15 @@ blueprint:
       default: []
       selector:
         action: {}
-mode: single
-max_exceeded: silent
+mode: queued
 variables:
   device_id: !input inovelli_switch
 trigger:
   - platform: event
     event_type: zwave_js_value_notification
-condition: "{{ trigger.event.data.device_id == device_id }}"
+condition:
+  - condition: "{{ trigger.event.data.device_id == device_id }}"
+  - condition: "{{ trigger.event.data.command_class_name == 'Central Scene' }}"
 action:
   - variables:
       button_id: "{{ trigger.event.data.property_key_name }}"
