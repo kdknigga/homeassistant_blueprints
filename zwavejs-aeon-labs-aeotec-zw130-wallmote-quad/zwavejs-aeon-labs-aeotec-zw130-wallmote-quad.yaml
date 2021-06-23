@@ -1,0 +1,173 @@
+# based on: https://community.home-assistant.io/t/zwavejs-aeon-labs-aeotec-zw130-wallmote-quad-all-scenes-supported/290685
+blueprint:
+  name: ZWaveJS - Aeotec WallMote Quad scene controller
+  description: |
+    Perform actions when Aeotec WallMote Quad buttons are interacted with.
+    
+    The release action is equivalent to a long tap.
+
+    A release action is always triggered after a hold action, which makes
+    them a bit tricky to use. The hold action is repeated as long as the
+    button is held down.
+
+  domain: automation
+  input:
+    zwavejs_device:
+      name: ZWaveJS Device
+      description: The Aeotec WallMote Quad controller to listen for events on.
+      selector:
+        device:
+          integration: zwave_js
+          manufacturer: AEON Labs
+          model: ZW130
+    tap_top_left_actions:
+      name: Tap Top Left Actions
+      selector:
+        action:
+      default: []
+    tap_top_right_actions:
+      name: Tap Top Right Actions
+      selector:
+        action:
+      default: []
+    tap_bottom_left_actions:
+      name: Tap Bottom Left Actions
+      selector:
+        action:
+      default: []
+    tap_bottom_right_actions:
+      name: Tap Bottom Right Actions
+      selector:
+        action:
+      default: []
+    release_top_left_actions:
+      name: Release Top Left Actions
+      selector:
+        action:
+      default: []
+    release_top_right_actions:
+      name: Release Top Right Actions
+      selector:
+        action:
+      default: []
+    release_bottom_left_actions:
+      name: Release Bottom Left Actions
+      selector:
+        action:
+      default: []
+    release_bottom_right_actions:
+      name: Release Bottom Right Actions
+      selector:
+        action:
+      default: []
+    hold_top_left_actions:
+      name: Hold Top Left Actions
+      selector:
+        action:
+      default: []
+    hold_top_right_actions:
+      name: Hold Top Right Actions
+      selector:
+        action:
+      default: []
+    hold_bottom_left_actions:
+      name: Hold Bottom Left Actions
+      selector:
+        action:
+      default: []
+    hold_bottom_right_actions:
+      name: Hold Bottom Right Actions
+      selector:
+        action:
+      default: []
+
+mode: queued
+
+variables:
+  logger: blueprint.zwavejs_wallmote_scene_activation
+  zwavejs_device: !input zwavejs_device
+
+trigger:
+  - platform: event
+    event_type: zwave_js_value_notification
+
+condition:
+  - condition: template
+    value_template: "{{ trigger.event.data.device_id == zwavejs_device }}"
+  - condition: template
+    value_template: "{{ trigger.event.data.command_class_name == 'Central Scene' }}"
+
+action:
+  - choose:
+        sequence:
+          - choose:
+            # IF tap top left
+              - conditions:
+                  - condition: template
+                    value_template: "{{ trigger.event.data.label == 'Scene 001' and trigger.event.data.value == 'KeyPressed' }}"
+                sequence: !input tap_top_left_actions
+            # IF tap top right
+              - conditions:
+                  - condition: template
+                    value_template: "{{ trigger.event.data.label == 'Scene 002' and trigger.event.data.value == 'KeyPressed' }}"
+                sequence: !input tap_top_right_actions
+            # IF tap bottom left
+              - conditions:
+                  - condition: template
+                    value_template: "{{ trigger.event.data.label == 'Scene 003' and trigger.event.data.value == 'KeyPressed' }}"
+                sequence: !input tap_bottom_left_actions
+            # IF tap bottom right
+              - conditions:
+                  - condition: template
+                    value_template: "{{ trigger.event.data.label == 'Scene 004' and trigger.event.data.value == 'KeyPressed' }}"
+                sequence: !input tap_bottom_right_actions
+            # IF release top left
+              - conditions:
+                  - condition: template
+                    value_template: "{{ trigger.event.data.label == 'Scene 001' and trigger.event.data.value == 'KeyReleased' }}"
+                sequence: !input release_top_left_actions
+            # IF release top right
+              - conditions:
+                  - condition: template
+                    value_template: "{{ trigger.event.data.label == 'Scene 002' and trigger.event.data.value == 'KeyReleased' }}"
+                sequence: !input release_top_right_actions
+            # IF release bottom left
+              - conditions:
+                  - condition: template
+                    value_template: "{{ trigger.event.data.label == 'Scene 003' and trigger.event.data.value == 'KeyReleased' }}"
+                sequence: !input release_bottom_left_actions
+            # IF release bottom right
+              - conditions:
+                  - condition: template
+                    value_template: "{{ trigger.event.data.label == 'Scene 004' and trigger.event.data.value == 'KeyReleased' }}"
+                sequence: !input release_bottom_right_actions
+            # IF hold top left
+              - conditions:
+                  - condition: template
+                    value_template: "{{ trigger.event.data.label == 'Scene 001' and trigger.event.data.value == 'KeyHeldDown' }}"
+                sequence: !input hold_top_left_actions
+            # IF hold top right
+              - conditions:
+                  - condition: template
+                    value_template: "{{ trigger.event.data.label == 'Scene 002' and trigger.event.data.value == 'KeyHeldDown' }}"
+                sequence: !input hold_top_right_actions
+            # IF hold bottom left
+              - conditions:
+                  - condition: template
+                    value_template: "{{ trigger.event.data.label == 'Scene 003' and trigger.event.data.value == 'KeyHeldDown' }}"
+                sequence: !input hold_bottom_left_actions
+            # IF hold bottom right
+              - conditions:
+                  - condition: template
+                    value_template: "{{ trigger.event.data.label == 'Scene 004' and trigger.event.data.value == 'KeyHeldDown' }}"
+                sequence: !input hold_bottom_right_actions
+            # ELSE: unhandled scene label/value
+            default:
+              - service: system_log.write
+                data:
+                  level: debug
+                  logger: "{{ logger }}"
+                  message: "Activated scene '{{ trigger.event.data.label }}' with value '{{ trigger.event.data.value }}' for node '{{ zwavejs_device }}' ({{ trigger.event.data.node_id }})"
+    # ELSE: unhandled zwavejs event
+    default: []
+

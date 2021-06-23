@@ -10,3 +10,6 @@ Activate scenes with Inovelli LZW31-SN paddle multiclicks
 ## [Inovelli LZW31-SN Scene Selection zwave_js](https://github.com/kdknigga/homeassistant_blueprints/tree/master/zwavejs-inovelli-LZW31-SN-scene-selection)
 Activate scenes with Inovelli LZW31-SN paddle multiclicks
 
+## [Aeotec ZW130 WallMote Quad zwave_js](https://github.com/kdknigga/homeassistant_blueprints/tree/master/zwavejs-aeon-labs-aeotec-zw130-wallmote-quad/)
+Activate scenes with an Aeotec WallMote Quad and the zwave_js integration
+
