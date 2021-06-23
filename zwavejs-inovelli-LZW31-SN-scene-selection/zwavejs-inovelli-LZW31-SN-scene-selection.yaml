@@ -104,8 +104,10 @@ trigger:
   - platform: event
     event_type: zwave_js_value_notification
 condition:
-  - condition: "{{ trigger.event.data.device_id == device_id }}"
-  - condition: "{{ trigger.event.data.command_class_name == 'Central Scene' }}"
+  - condition: template
+    value_template: "{{ trigger.event.data.device_id == device_id }}"
+  - condition: template
+    value_template: "{{ trigger.event.data.command_class_name == 'Central Scene' }}"
 action:
   - variables:
       button_id: "{{ trigger.event.data.property_key_name }}"
