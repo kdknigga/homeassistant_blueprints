@@ -148,10 +148,10 @@ variables:
   light_target_9: !input light_target_9
   replay_sensor_10: !input replay_sensor_10
   light_target_10: !input light_target_10
-  replay_sensor_10: !input replay_sensor_11
-  light_target_10: !input light_target_11
-  replay_sensor_10: !input replay_sensor_12
-  light_target_10: !input light_target_13
+  replay_sensor_11: !input replay_sensor_11
+  light_target_11: !input light_target_11
+  replay_sensor_12: !input replay_sensor_12
+  light_target_12: !input light_target_12
 
 # Automation Mode - Parallel
 mode: parallel
@@ -214,9 +214,9 @@ action:
         {% elif trigger.entity_id == replay_sensor_10 %}
           {{ light_target_10 }}
         {% elif trigger.entity_id == replay_sensor_11 %}
-          {{ light_target_10 }}
+          {{ light_target_11 }}
         {% elif trigger.entity_id == replay_sensor_12 %}
-          {{ light_target_10 }}
+          {{ light_target_12 }}
         {% endif %}
   - choose:
       # Replay turned on && entity_id is "LIGHT"
