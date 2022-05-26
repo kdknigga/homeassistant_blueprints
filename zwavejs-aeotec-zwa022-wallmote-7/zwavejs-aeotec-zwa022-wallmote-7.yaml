@@ -36,12 +36,12 @@ blueprint:
     tap_top2x_actions:
       name: Tap Top 2x Actions
       selector:
-	action: {}
+        action: {}
       default: []
     tap_bottom2x_actions:
       name: Tap Bottom 2x Actions
       selector:
-	action: {}
+        action: {}
       default: []
     tap_top3x_actions:
       name: Tap Top 3x Actions
