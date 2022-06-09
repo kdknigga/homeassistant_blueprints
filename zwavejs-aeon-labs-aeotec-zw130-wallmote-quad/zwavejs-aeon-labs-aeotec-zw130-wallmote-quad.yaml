@@ -1,15 +1,7 @@
 # based on: https://community.home-assistant.io/t/zwavejs-aeon-labs-aeotec-zw130-wallmote-quad-all-scenes-supported/290685
 blueprint:
   name: ZWaveJS - Aeotec WallMote Quad scene controller
-  description: |
-    Perform actions when Aeotec WallMote Quad buttons are interacted with.
-    
-    The release action is equivalent to a long tap.
-
-    A release action is always triggered after a hold action, which makes
-    them a bit tricky to use. The hold action is repeated as long as the
-    button is held down.
-
+  description: Perform actions when Aeotec WallMote Quad buttons are interacted with.
   domain: automation
   input:
     zwavejs_device:

@@ -1,19 +1,7 @@
 # based on: https://community.home-assistant.io/t/zwavejs-aeon-labs-aeotec-zw129-wallmote-due-all-scenes-supported/313610
 blueprint:
   name: ZWaveJS - Aeotec WallMote 7 scene controller
-  description: 'Perform actions when Aeotec WallMote 7 buttons are interacted with.
-
-
-    The release action is equivalent to a long tap.
-
-
-    A release action is always triggered after a hold action, which makes
-
-    them a bit tricky to use. The hold action is repeated as long as the
-
-    button is held down.
-
-    '
+  description: Perform actions when Aeotec WallMote 7 buttons are interacted with.
   domain: automation
   input:
     zwavejs_device:
@@ -73,13 +61,25 @@ blueprint:
       selector:
         action: {}
       default: []
-mode: single
+
+
+
+mode: queued
+
+variables:
+  logger: blueprint.zwavejs_scene_activation
+  zwavejs_device: !input zwavejs_device
+
 trigger:
 - platform: event
   event_type: zwave_js_value_notification
-variables:
-  logger: blueprint.zwavejs_scene_activation
-  zwavejs_device: !input 'zwavejs_device'
+
+condition:
+  - condition: template
+    value_template: "{{ trigger.event.data.device_id == zwavejs_device }}"
+  - condition: template
+    value_template: "{{ trigger.event.data.command_class_name == 'Central Scene' }}"
+
 action:
 - choose:
   - conditions:
