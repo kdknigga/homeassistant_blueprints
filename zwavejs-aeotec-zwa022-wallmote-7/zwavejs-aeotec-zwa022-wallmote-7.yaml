@@ -1,19 +1,7 @@
 # based on: https://community.home-assistant.io/t/zwavejs-aeon-labs-aeotec-zw129-wallmote-due-all-scenes-supported/313610
 blueprint:
   name: ZWaveJS - Aeotec WallMote 7 scene controller
-  description: 'Perform actions when Aeotec WallMote 7 buttons are interacted with.
-
-
-    The release action is equivalent to a long tap.
-
-
-    A release action is always triggered after a hold action, which makes
-
-    them a bit tricky to use. The hold action is repeated as long as the
-
-    button is held down.
-
-    '
+  description: Perform actions when Aeotec WallMote 7 buttons are interacted with.
   domain: automation
   input:
     zwavejs_device:
@@ -73,79 +61,101 @@ blueprint:
       selector:
         action: {}
       default: []
-mode: single
-trigger:
-- platform: event
-  event_type: zwave_js_value_notification
+
+mode: queued
+
 variables:
   logger: blueprint.zwavejs_scene_activation
-  zwavejs_device: !input 'zwavejs_device'
+  zwavejs_device: !input zwavejs_device
+
+trigger:
+  - platform: event
+    event_type: zwave_js_value_notification
+
+condition:
+  - condition: template
+    value_template: "{{ trigger.event.data.device_id == zwavejs_device }}"
+  - condition: template
+    value_template: "{{ trigger.event.data.command_class_name == 'Central Scene' }}"
+
 action:
-- choose:
-  - conditions:
-    - condition: template
-      value_template: '{{ trigger.event.data.device_id == zwavejs_device }}'
-    - condition: template
-      value_template: '{{ trigger.event.data.command_class_name == ''Central Scene''
-        }}'
-    sequence:
-    - choose:
+  - choose:
       - conditions:
-        - condition: template
-          value_template: '{{ trigger.event.data.label == ''Scene 001'' and trigger.event.data.value
-            == ''KeyPressed'' }}'
-        sequence: !input 'tap_top_actions'
-      - conditions:
-        - condition: template
-          value_template: '{{ trigger.event.data.label == ''Scene 002'' and trigger.event.data.value
-            == ''KeyPressed'' }}'
-        sequence: !input 'tap_bottom_actions'
-      - conditions:
-        - condition: template
-          value_template: '{{ trigger.event.data.label == ''Scene 001'' and trigger.event.data.value
-            == ''KeyPressed2x'' }}'
-        sequence: !input 'tap_top2x_actions'
-      - conditions:
-        - condition: template
-          value_template: '{{ trigger.event.data.label == ''Scene 002'' and trigger.event.data.value
-            == ''KeyPressed2x'' }}'
-        sequence: !input 'tap_bottom2x_actions'
-      - conditions:
-        - condition: template
-          value_template: '{{ trigger.event.data.label == ''Scene 001'' and trigger.event.data.value
-            == ''KeyPressed3x'' }}'
-        sequence: !input 'tap_top3x_actions'
-      - conditions:
-        - condition: template
-          value_template: '{{ trigger.event.data.label == ''Scene 002'' and trigger.event.data.value
-            == ''KeyPressed3x'' }}'
-        sequence: !input 'tap_bottom3x_actions'
-      - conditions:
-        - condition: template
-          value_template: '{{ trigger.event.data.label == ''Scene 001'' and trigger.event.data.value
-            == ''KeyReleased'' }}'
-        sequence: !input 'release_top_actions'
-      - conditions:
-        - condition: template
-          value_template: '{{ trigger.event.data.label == ''Scene 002'' and trigger.event.data.value
-            == ''KeyReleased'' }}'
-        sequence: !input 'release_bottom_actions'
-      - conditions:
-        - condition: template
-          value_template: '{{ trigger.event.data.label == ''Scene 001'' and trigger.event.data.value
-            == ''KeyHeldDown'' }}'
-        sequence: !input 'hold_top_actions'
-      - conditions:
-        - condition: template
-          value_template: '{{ trigger.event.data.label == ''Scene 002'' and trigger.event.data.value
-            == ''KeyHeldDown'' }}'
-        sequence: !input 'hold_bottom_actions'
-      default:
-      - service: system_log.write
-        data:
-          level: debug
-          logger: '{{ logger }}'
-          message: Activated scene '{{ trigger.event.data.label }}' with value '{{
-            trigger.event.data.value }}' for node '{{ zwavejs_device }}' ({{ trigger.event.data.node_id
-            }})
-  default: []
+          - condition: template
+            value_template: "{{ trigger.event.data.device_id == zwavejs_device }}"
+          - condition: template
+            value_template:
+              "{{ trigger.event.data.command_class_name == 'Central Scene'
+              }}"
+        sequence:
+          - choose:
+              - conditions:
+                  - condition: template
+                    value_template:
+                      "{{ trigger.event.data.label == 'Scene 001' and trigger.event.data.value
+                      == 'KeyPressed' }}"
+                sequence: !input "tap_top_actions"
+              - conditions:
+                  - condition: template
+                    value_template:
+                      "{{ trigger.event.data.label == 'Scene 002' and trigger.event.data.value
+                      == 'KeyPressed' }}"
+                sequence: !input "tap_bottom_actions"
+              - conditions:
+                  - condition: template
+                    value_template:
+                      "{{ trigger.event.data.label == 'Scene 001' and trigger.event.data.value
+                      == 'KeyPressed2x' }}"
+                sequence: !input "tap_top2x_actions"
+              - conditions:
+                  - condition: template
+                    value_template:
+                      "{{ trigger.event.data.label == 'Scene 002' and trigger.event.data.value
+                      == 'KeyPressed2x' }}"
+                sequence: !input "tap_bottom2x_actions"
+              - conditions:
+                  - condition: template
+                    value_template:
+                      "{{ trigger.event.data.label == 'Scene 001' and trigger.event.data.value
+                      == 'KeyPressed3x' }}"
+                sequence: !input "tap_top3x_actions"
+              - conditions:
+                  - condition: template
+                    value_template:
+                      "{{ trigger.event.data.label == 'Scene 002' and trigger.event.data.value
+                      == 'KeyPressed3x' }}"
+                sequence: !input "tap_bottom3x_actions"
+              - conditions:
+                  - condition: template
+                    value_template:
+                      "{{ trigger.event.data.label == 'Scene 001' and trigger.event.data.value
+                      == 'KeyReleased' }}"
+                sequence: !input "release_top_actions"
+              - conditions:
+                  - condition: template
+                    value_template:
+                      "{{ trigger.event.data.label == 'Scene 002' and trigger.event.data.value
+                      == 'KeyReleased' }}"
+                sequence: !input "release_bottom_actions"
+              - conditions:
+                  - condition: template
+                    value_template:
+                      "{{ trigger.event.data.label == 'Scene 001' and trigger.event.data.value
+                      == 'KeyHeldDown' }}"
+                sequence: !input "hold_top_actions"
+              - conditions:
+                  - condition: template
+                    value_template:
+                      "{{ trigger.event.data.label == 'Scene 002' and trigger.event.data.value
+                      == 'KeyHeldDown' }}"
+                sequence: !input "hold_bottom_actions"
+            default:
+              - service: system_log.write
+                data:
+                  level: debug
+                  logger: "{{ logger }}"
+                  message:
+                    Activated scene '{{ trigger.event.data.label }}' with value '{{
+                    trigger.event.data.value }}' for node '{{ zwavejs_device }}' ({{ trigger.event.data.node_id
+                    }})
+    default: []
