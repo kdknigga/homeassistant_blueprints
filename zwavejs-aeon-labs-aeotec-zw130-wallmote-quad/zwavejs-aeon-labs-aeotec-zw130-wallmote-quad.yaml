@@ -1,15 +1,7 @@
 # based on: https://community.home-assistant.io/t/zwavejs-aeon-labs-aeotec-zw130-wallmote-quad-all-scenes-supported/290685
 blueprint:
   name: ZWaveJS - Aeotec WallMote Quad scene controller
-  description: |
-    Perform actions when Aeotec WallMote Quad buttons are interacted with.
-    
-    The release action is equivalent to a long tap.
-
-    A release action is always triggered after a hold action, which makes
-    them a bit tricky to use. The hold action is repeated as long as the
-    button is held down.
-
+  description: Perform actions when Aeotec WallMote Quad buttons are interacted with.
   domain: automation
   input:
     zwavejs_device:
@@ -99,62 +91,62 @@ condition:
 
 action:
   - choose:
-    # IF tap top left
+      # IF tap top left
       - conditions:
           - condition: template
             value_template: "{{ trigger.event.data.label == 'Scene 001' and trigger.event.data.value == 'KeyPressed' }}"
         sequence: !input tap_top_left_actions
-    # IF tap top right
+      # IF tap top right
       - conditions:
           - condition: template
             value_template: "{{ trigger.event.data.label == 'Scene 002' and trigger.event.data.value == 'KeyPressed' }}"
         sequence: !input tap_top_right_actions
-    # IF tap bottom left
+      # IF tap bottom left
       - conditions:
           - condition: template
             value_template: "{{ trigger.event.data.label == 'Scene 003' and trigger.event.data.value == 'KeyPressed' }}"
         sequence: !input tap_bottom_left_actions
-    # IF tap bottom right
+      # IF tap bottom right
       - conditions:
           - condition: template
             value_template: "{{ trigger.event.data.label == 'Scene 004' and trigger.event.data.value == 'KeyPressed' }}"
         sequence: !input tap_bottom_right_actions
-    # IF release top left
+      # IF release top left
       - conditions:
           - condition: template
             value_template: "{{ trigger.event.data.label == 'Scene 001' and trigger.event.data.value == 'KeyReleased' }}"
         sequence: !input release_top_left_actions
-    # IF release top right
+      # IF release top right
       - conditions:
           - condition: template
             value_template: "{{ trigger.event.data.label == 'Scene 002' and trigger.event.data.value == 'KeyReleased' }}"
         sequence: !input release_top_right_actions
-    # IF release bottom left
+      # IF release bottom left
       - conditions:
           - condition: template
             value_template: "{{ trigger.event.data.label == 'Scene 003' and trigger.event.data.value == 'KeyReleased' }}"
         sequence: !input release_bottom_left_actions
-    # IF release bottom right
+      # IF release bottom right
       - conditions:
           - condition: template
             value_template: "{{ trigger.event.data.label == 'Scene 004' and trigger.event.data.value == 'KeyReleased' }}"
         sequence: !input release_bottom_right_actions
-    # IF hold top left
+      # IF hold top left
       - conditions:
           - condition: template
             value_template: "{{ trigger.event.data.label == 'Scene 001' and trigger.event.data.value == 'KeyHeldDown' }}"
         sequence: !input hold_top_left_actions
-    # IF hold top right
+      # IF hold top right
       - conditions:
           - condition: template
             value_template: "{{ trigger.event.data.label == 'Scene 002' and trigger.event.data.value == 'KeyHeldDown' }}"
         sequence: !input hold_top_right_actions
-    # IF hold bottom left
+      # IF hold bottom left
       - conditions:
           - condition: template
             value_template: "{{ trigger.event.data.label == 'Scene 003' and trigger.event.data.value == 'KeyHeldDown' }}"
         sequence: !input hold_bottom_left_actions
-    # IF hold bottom right
+      # IF hold bottom right
       - conditions:
           - condition: template
             value_template: "{{ trigger.event.data.label == 'Scene 004' and trigger.event.data.value == 'KeyHeldDown' }}"
